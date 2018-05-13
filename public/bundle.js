@@ -57,8 +57,8 @@
 
 	var Main = __webpack_require__(216);
 	var Weather = __webpack_require__(218);
-	var About = __webpack_require__(222);
-	var Examples = __webpack_require__(223);
+	var About = __webpack_require__(219);
+	var Examples = __webpack_require__(220);
 
 	ReactDOM.render(React.createElement(
 	  Router,
@@ -24925,35 +24925,52 @@
 	'use strict';
 
 	var React = __webpack_require__(1);
-	var WeatherForm = __webpack_require__(219);
-	var WeatherMessage = __webpack_require__(220);
-	var openWeatherMap = __webpack_require__(221);
+	var WeatherForm = __webpack_require__(221);
+	var WeatherMessage = __webpack_require__(222);
+	var openWeatherMap = __webpack_require__(223);
 
 	var Weather = React.createClass({
 	  displayName: 'Weather',
 
 	  getInitialState: function getInitialState() {
 	    return {
-	      location: 'Miami',
-	      temp: 88
+	      isLoading: false
 	    };
 	  },
 	  handleSearch: function handleSearch(location) {
 	    var that = this;
 
+	    this.setState({ isLoading: true });
+
 	    openWeatherMap.getTemp(location).then(function (temp) {
 	      that.setState({
 	        location: location,
-	        temp: temp
+	        temp: temp,
+	        isLoading: false
 	      });
 	    }, function (errorMessage) {
+	      that.setState({ isLoading: false });
 	      alert(errorMessage);
 	    });
 	  },
 	  render: function render() {
 	    var _state = this.state,
+	        isLoading = _state.isLoading,
 	        temp = _state.temp,
 	        location = _state.location;
+
+
+	    function renderMessage() {
+	      if (isLoading) {
+	        return React.createElement(
+	          'h3',
+	          null,
+	          'Fetching weather...'
+	        );
+	      } else if (temp && location) {
+	        return React.createElement(WeatherMessage, { location: location, temp: temp });
+	      }
+	    }
 
 	    return React.createElement(
 	      'div',
@@ -24964,7 +24981,7 @@
 	        'Weather Component'
 	      ),
 	      React.createElement(WeatherForm, { onSearch: this.handleSearch }),
-	      React.createElement(WeatherMessage, { location: location, temp: temp })
+	      renderMessage()
 	    );
 	  }
 	});
@@ -24973,6 +24990,50 @@
 
 /***/ },
 /* 219 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var About = React.createClass({
+	  displayName: 'About',
+
+	  render: function render() {
+	    return React.createElement(
+	      'h3',
+	      null,
+	      'About Component'
+	    );
+	  }
+	});
+
+	module.exports = About;
+
+/***/ },
+/* 220 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+
+	var Examples = React.createClass({
+	  displayName: 'Examples',
+
+	  render: function render() {
+	    return React.createElement(
+	      'h3',
+	      null,
+	      'Examples Component'
+	    );
+	  }
+	});
+
+	module.exports = Examples;
+
+/***/ },
+/* 221 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25013,7 +25074,7 @@
 	module.exports = WeatherForm;
 
 /***/ },
-/* 220 */
+/* 222 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25042,7 +25103,7 @@
 	module.exports = WeatherMessage;
 
 /***/ },
-/* 221 */
+/* 223 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -25067,50 +25128,6 @@
 	    });
 	  }
 	};
-
-/***/ },
-/* 222 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var About = React.createClass({
-	  displayName: 'About',
-
-	  render: function render() {
-	    return React.createElement(
-	      'h3',
-	      null,
-	      'About Component'
-	    );
-	  }
-	});
-
-	module.exports = About;
-
-/***/ },
-/* 223 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var React = __webpack_require__(1);
-
-	var Examples = React.createClass({
-	  displayName: 'Examples',
-
-	  render: function render() {
-	    return React.createElement(
-	      'h3',
-	      null,
-	      'Examples Component'
-	    );
-	  }
-	});
-
-	module.exports = Examples;
 
 /***/ },
 /* 224 */
